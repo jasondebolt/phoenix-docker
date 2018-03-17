@@ -1,1 +1,1 @@
-# Mosaic's base docker images
+# Mosaic's base docker images.
