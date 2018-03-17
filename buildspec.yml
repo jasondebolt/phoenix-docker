@@ -4,6 +4,8 @@ phases:
   build:
     commands:
       - cd $CODEBUILD_SRC_DIR/ubuntu/14.04
-      - docker build -t ubuntu:14.04 .
-      - cd $CODEBUILD_SRC_DIR/java/openjdk-8
-      - docker build -t java:openjdk-8 .
+      - docker build -t 057281004471.dkr.ecr.us-east-1.amazonaws.com/ubuntu:14.04 .
+      - cd $CODEBUILD_SRC_DIR/ubuntu/java/openjdk-8
+      - docker build -t 057281004471.dkr.ecr.us-east-1.amazonaws.com/java:openjdk-8 .
+      - cd $CODEBUILD_SRC_DIR/ubuntu/scala/2.12
+      - docker build -t 057281004471.dkr.ecr.us-east-1.amazonaws.com/scala:2.12 .
