@@ -1,13 +1,22 @@
 version: 0.2
 
+env:
+  variables:
+    ECR_REPO: "057281004471.dkr.ecr.us-east-1.amazonaws.com"
+
 phases:
   build:
     commands:
       - cd $CODEBUILD_SRC_DIR/ubuntu/14.04
-      - docker build -t 057281004471.dkr.ecr.us-east-1.amazonaws.com/ubuntu:14.04 .
+      - docker build -t $ECR/ubuntu:14.04 .
       - cd $CODEBUILD_SRC_DIR/ubuntu/java/openjdk-8
-      - docker build -t 057281004471.dkr.ecr.us-east-1.amazonaws.com/java:openjdk-8 .
+      - docker build -t $ECR/java:openjdk-8 .
       - cd $CODEBUILD_SRC_DIR/ubuntu/scala/2.12
-      - docker build -t 057281004471.dkr.ecr.us-east-1.amazonaws.com/scala:2.12 .
+      - docker build -t $ECR/scala:2.12 .
       - cd $CODEBUILD_SRC_DIR/ubuntu/scala-build/0.1.0
-      - docker build -t 057281004471.dkr.ecr.us-east-1.amazonaws.com/scala-build:0.1.0 .
+      - docker build -t $ECR/scala-build:0.1.0 .
+  post_build:
+    commands:
+      - docker tag $ECR/ubuntu:14.04 $ECR/ubuntu:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ECR/ubuntu:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ECR/ubuntu:14.04
