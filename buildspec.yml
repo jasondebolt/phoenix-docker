@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    ECR_REPO: "057281004471.dkr.ecr.us-east-1.amazonaws.com"
+    ECR: "057281004471.dkr.ecr.us-east-1.amazonaws.com"
 
 phases:
   build:
