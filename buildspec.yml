@@ -5,6 +5,11 @@ env:
     ECR: "057281004471.dkr.ecr.us-east-1.amazonaws.com"
 
 phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
   build:
     commands:
       - cd $CODEBUILD_SRC_DIR/ubuntu/14.04
