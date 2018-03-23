@@ -11,7 +11,6 @@ ENV JAVA_VERSION=8 \
     GRADLE_VERSION=2.7 \
     PROPERTIES_COMMON_VERSIION=0.92.37.8 \
     PYTHON_TOOL_VERSION="3.3-*"
-
 # Install Java
 RUN apt-get update \
     && apt-get install -y software-properties-common=$PROPERTIES_COMMON_VERSIION \
