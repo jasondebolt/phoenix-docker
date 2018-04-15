@@ -36,3 +36,5 @@ RUN wget "https://bootstrap.pypa.io/get-pip.py" -O /tmp/get-pip.py \
     && python /tmp/get-pip.py \
     && pip install awscli \
     && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN apt-get install -y --no-install-recommends jq

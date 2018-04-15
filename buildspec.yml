@@ -25,3 +25,12 @@ phases:
       - docker tag $ECR/ubuntu:14.04 $ECR/ubuntu:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $ECR/ubuntu:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $ECR/ubuntu:14.04
+      - docker tag $ECR/java:openjdk-8 $ECR/java:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ECR/java:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ECR/java:openjdk-8
+      - docker tag $ECR/scala:2.12 $ECR/scala:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ECR/scala:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ECR/scala:2.12
+      - docker tag $ECR/scala-build:0.1.0 $ECR/scala-build:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ECR/scala-build:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ECR/scala-build:0.1.0
