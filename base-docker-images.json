@@ -1,0 +1,605 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Provisions an ECR Repository.",
+  "Parameters": {
+    "AdminRoleARN": {
+      "Type": "String"
+    },
+    "ProjectName": {
+      "Type": "String"
+    },
+    "ProjectDescription": {
+      "Type": "String"
+    },
+    "CodeBuildBucketName": {
+      "Description": "The bucket name in which CodeBuild artifacts will be stored.",
+      "Type": "String"
+    },
+    "CodePipelineBucketName": {
+      "Description": "The bucket name in which CodePipeline artifacts will be stored.",
+      "Type": "String"
+    },
+    "CodeBuildDockerImage": {
+      "Description": "OPTIONAL. The ECR name (i.e '{account_id}.dkr.ecr.us-east-1.amazonaws.com/{image_name}:0.1.0') to biuld the images with.",
+      "Default": "aws/codebuild/ubuntu-base:14.04",
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "CodeCommitRepository": {
+      "Type": "AWS::CodeCommit::Repository",
+      "Properties": {
+        "RepositoryName": {
+          "Ref": "ProjectName"
+        },
+        "RepositoryDescription": {
+          "Ref": "ProjectDescription"
+        }
+      }
+    },
+    "CodeBuildBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Ref": "CodeBuildBucketName"
+        }
+      }
+    },
+    "CodePipelineBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Ref": "CodePipelineBucketName"
+        }
+      }
+    },
+    "CodePipelineServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Fn::Join": ["-", [
+            "code-pipeline",
+            {
+              "Ref": "ProjectName"
+            },
+            "service-role"
+          ]]
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "codepipeline.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }]
+        },
+        "Policies": [{
+          "PolicyName": {
+            "Fn::Join": ["-", [
+              "code-build",
+              {
+                "Ref": "ProjectName"
+              },
+              "service-policy"
+            ]]
+          },
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+                "Action": [
+                  "s3:GetObject",
+                  "s3:GetObjectVersion",
+                  "s3:GetBucketVersioning"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "s3:PutObject"
+                ],
+                "Resource": [
+                  "arn:aws:s3:::codepipeline*",
+                  "arn:aws:s3:::elasticbeanstalk*"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "codecommit:CancelUploadArchive",
+                  "codecommit:GetBranch",
+                  "codecommit:GetCommit",
+                  "codecommit:GetUploadArchiveStatus",
+                  "codecommit:UploadArchive"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "codedeploy:CreateDeployment",
+                  "codedeploy:GetApplicationRevision",
+                  "codedeploy:GetDeployment",
+                  "codedeploy:GetDeploymentConfig",
+                  "codedeploy:RegisterApplicationRevision"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "elasticbeanstalk:*",
+                  "ec2:*",
+                  "elasticloadbalancing:*",
+                  "autoscaling:*",
+                  "cloudwatch:*",
+                  "s3:*",
+                  "sns:*",
+                  "cloudformation:*",
+                  "rds:*",
+                  "sqs:*",
+                  "ecs:*",
+                  "iam:PassRole"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "lambda:InvokeFunction",
+                  "lambda:ListFunctions"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "opsworks:CreateDeployment",
+                  "opsworks:DescribeApps",
+                  "opsworks:DescribeCommands",
+                  "opsworks:DescribeDeployments",
+                  "opsworks:DescribeInstances",
+                  "opsworks:DescribeStacks",
+                  "opsworks:UpdateApp",
+                  "opsworks:UpdateStack"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "cloudformation:CreateStack",
+                  "cloudformation:DeleteStack",
+                  "cloudformation:DescribeStacks",
+                  "cloudformation:UpdateStack",
+                  "cloudformation:CreateChangeSet",
+                  "cloudformation:DeleteChangeSet",
+                  "cloudformation:DescribeChangeSet",
+                  "cloudformation:ExecuteChangeSet",
+                  "cloudformation:SetStackPolicy",
+                  "cloudformation:ValidateTemplate",
+                  "iam:PassRole"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "codebuild:BatchGetBuilds",
+                  "codebuild:StartBuild"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+              }
+            ]
+          }
+        }]
+      }
+    },
+    "CodeBuildServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Fn::Join": ["-", [
+            "code-build",
+            {
+              "Ref": "ProjectName"
+            },
+            "service-role"
+          ]]
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "codebuild.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }]
+        },
+        "Policies": [{
+          "PolicyName": {
+            "Fn::Join": ["-", [
+              "code-build",
+              {
+                "Ref": "ProjectName"
+              },
+              "service-policy"
+            ]]
+          },
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Sid": "AccessECR",
+              "Effect": "Allow",
+              "Action": ["ecr:*"],
+              "Resource": "*"
+            }]
+          }
+        }]
+      }
+    },
+    "CodePipeline": {
+      "Type": "AWS::CodePipeline::Pipeline",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": ["CodePipelineServiceRole", "Arn"]
+        },
+        "Name": {
+          "Ref": "ProjectName"
+        },
+        "ArtifactStore": {
+          "Type": "S3",
+          "Location": {
+            "Ref": "CodePipelineBucketName"
+          }
+        },
+        "Stages": [{
+            "Name": "Source",
+            "Actions": [{
+              "Name": "SourceAction",
+              "ActionTypeId": {
+                "Category": "Source",
+                "Owner": "AWS",
+                "Version": "1",
+                "Provider": "CodeCommit"
+              },
+              "OutputArtifacts": [{
+                "Name": "SourceOutput"
+              }],
+              "Configuration": {
+                "RepositoryName": {
+                  "Fn::GetAtt": [
+                    "CodeCommitRepository",
+                    "Name"
+                  ]
+                },
+                "BranchName": "master"
+              },
+              "RunOrder": 1
+            }]
+          },
+          {
+            "Name": "Build",
+            "Actions": [{
+              "Name": "CodeBuild",
+              "ActionTypeId": {
+                "Category": "Build",
+                "Owner": "AWS",
+                "Provider": "CodeBuild",
+                "Version": "1"
+              },
+              "RunOrder": 1,
+              "Configuration": {
+                "ProjectName": {
+                  "Ref": "ProjectName"
+                },
+              },
+              "OutputArtifacts": [{
+                "Name": "BuildOutput"
+              }],
+              "InputArtifacts": [{
+                "Name": "SourceOutput"
+              }]
+            }]
+          }
+        ]
+      }
+    },
+    "CodeBuild": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "S3",
+          "Location": {
+            "Ref": "CodeBuildBucket"
+          },
+          "NamespaceType": "BUILD_ID",
+          "Name": {
+            "Ref": "ProjectName"
+          },
+          "Packaging": "NONE"
+        },
+        "BadgeEnabled": "true",
+        "Cache": {
+          "Location": {
+            "Fn::Join": ["", [{
+                "Ref": "CodeBuildBucket"
+              },
+              "/",
+              {
+                "Ref": "ProjectName"
+              },
+              "-cache"
+            ]]
+          },
+          "Type": "S3"
+        },
+        "Description": {
+          "Ref": "ProjectDescription"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_LARGE",
+          "EnvironmentVariables": [],
+          "Image": {
+            "Ref": "CodeBuildDockerImage"
+          },
+          "PrivilegedMode": "true",
+          "Type": "LINUX_CONTAINER"
+        },
+        "Name": {
+          "Ref": "ProjectName"
+        },
+        "ServiceRole": {
+          "Ref": "CodeBuildServiceRole"
+        },
+        "Source": {
+          "Type": "CODECOMMIT",
+          "Location": {
+            "Fn::Join": ["", [
+              "https://git-codecommit.",
+              {"Ref": "AWS::Region"},
+              ".amazonaws.com/v1/repos/",
+              {
+                "Ref": "ProjectName"
+              }
+            ]]
+          }
+        },
+        "TimeoutInMinutes": 60,
+        "Tags": []
+      }
+    },
+    "Ubuntu": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "ubuntu",
+        "RepositoryPolicyText": {
+          "Version": "2008-10-17",
+          "Statement": [{
+              "Sid": "AllowPushPull",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": [{
+                  "Ref": "AdminRoleARN"
+                }]
+              },
+              "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ]
+            },
+            {
+              "Sid": "CodeBuildAccess",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              },
+              "Action": [
+                "ecr:*"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "Java": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "java",
+        "RepositoryPolicyText": {
+          "Version": "2008-10-17",
+          "Statement": [{
+              "Sid": "AllowPushPull",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": [{
+                  "Ref": "AdminRoleARN"
+                }]
+              },
+              "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ]
+            },
+            {
+              "Sid": "CodeBuildAccess",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              },
+              "Action": [
+                "ecr:*"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "Python": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "python",
+        "RepositoryPolicyText": {
+          "Version": "2008-10-17",
+          "Statement": [{
+              "Sid": "AllowPushPull",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": [{
+                  "Ref": "AdminRoleARN"
+                }]
+              },
+              "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ]
+            },
+            {
+              "Sid": "CodeBuildAccess",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              },
+              "Action": [
+                "ecr:*"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "Scala": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "scala",
+        "RepositoryPolicyText": {
+          "Version": "2008-10-17",
+          "Statement": [{
+              "Sid": "AllowPushPull",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": [{
+                  "Ref": "AdminRoleARN"
+                }]
+              },
+              "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ]
+            },
+            {
+              "Sid": "CodeBuildAccess",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              },
+              "Action": [
+                "ecr:*"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "ScalaBuild": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "scala-build",
+        "RepositoryPolicyText": {
+          "Version": "2008-10-17",
+          "Statement": [{
+              "Sid": "AllowPushPull",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": [{
+                  "Ref": "AdminRoleARN"
+                }]
+              },
+              "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ]
+            },
+            {
+              "Sid": "CodeBuildAccess",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              },
+              "Action": [
+                "ecr:*"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "Docker": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": "docker",
+        "RepositoryPolicyText": {
+          "Version": "2008-10-17",
+          "Statement": [{
+              "Sid": "AllowPushPull",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": [{
+                  "Ref": "AdminRoleARN"
+                }]
+              },
+              "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload"
+              ]
+            },
+            {
+              "Sid": "CodeBuildAccess",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "codebuild.amazonaws.com"
+              },
+              "Action": [
+                "ecr:*"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

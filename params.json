@@ -1,0 +1,22 @@
+[
+  {
+    "ParameterKey": "AdminRoleARN",
+    "ParameterValue": "arn:aws:iam::714284646049:role/PhoenixAdmins"
+  },
+  {
+    "ParameterKey": "ProjectName",
+    "ParameterValue": "PhoenixBaseDockerImages"
+  },
+  {
+    "ParameterKey": "ProjectDescription",
+    "ParameterValue": "Automatically builds hierarchies of Docker images and pushes them to ECR using CI\\/CD."
+  },
+  {
+    "ParameterKey": "CodeBuildBucketName",
+    "ParameterValue": "phoenix-code-build-base-docker-images"
+  },
+  {
+    "ParameterKey": "CodePipelineBucketName",
+    "ParameterValue": "phoenix-code-pipeline-base-docker-images"
+  }
+]
