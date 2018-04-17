@@ -12,10 +12,17 @@ A full CI/CD solution for continuously building and deploying entire Docker imag
 ```
 $ git clone {the URL of this repo}
 ```
+
 * Update the params.json file with your project info (replace 'phoenix' with your project name.)
 * The ProjectName should match the name of this Git repo. You can keep it as 'docker-image-fanout-pipeline'.
 * Update the 'ECR' variable in the buildspec.yml file with your AWS Account ID.
+* Replace the existing AWS AccountID's with your own Account ID. This will also update the Dockerfiles.
 
+```
+$ python search_and_replace.py . 057281004471 {your AWS AccountId}
+```
+
+* Launch the stack
 ```
 $ aws cloudformation validate-template --template-body file://docker-image-fanout-pipeline.json
 $ aws cloudformation create-stack --stack-name docker-image-fanout-pipeline --template-body file://docker-image-fanout-pipeline.json --parameters file://params.json --capabilities CAPABILITY_NAMED_IAM

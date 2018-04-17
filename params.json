@@ -9,7 +9,7 @@
   },
   {
     "ParameterKey": "ProjectDescription",
-    "ParameterValue": "Automatically builds hierarchies of Docker images and pushes them to ECR using CI\\/CD."
+    "ParameterValue": "Automatically builds hierarchies of Docker images and pushes them to ECR."
   },
   {
     "ParameterKey": "CodeBuildBucketName",

@@ -1,4 +1,4 @@
-FROM 057281004471.dkr.ecr.us-east-1.amazonaws.com/scala:2.12
+FROM 714284646049.dkr.ecr.us-east-1.amazonaws.com/scala:2.12
 
 ENV DOCKER_BUCKET="download.docker.com" \
     DOCKER_VERSION="17.09.0-ce" \
