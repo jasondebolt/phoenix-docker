@@ -5,7 +5,7 @@
   },
   {
     "ParameterKey": "ProjectName",
-    "ParameterValue": "PhoenixBaseDockerImages"
+    "ParameterValue": "base-docker-images"
   },
   {
     "ParameterKey": "ProjectDescription",

@@ -15,6 +15,12 @@ Update the params.json file with your project info (replace 'phoenix' with your 
 aws cloudformation validate-template --template-body file://base-docker-images.json
 
 aws cloudformation create-stack --stack-name base-docker-images --template-body file://base-docker-images.json --parameters file://params.json --capabilities CAPABILITY_NAMED_IAM
+
+After the stack has been created, add the generated CodeCommit repo as a remote branch and push this repo to it.
+$ git remote add codecommit {codecommit URL}
+$ git push origin master
+
+Then watch the pipeline build all of your Docker images and push them to ECR using AWS CodePipeline.
 ```
 
 #### Adding new Dockerfiles, ECR Repos, pipeline stages, or changing a CodeBuild job.
