@@ -19,7 +19,7 @@ $ git clone {the URL of this repo}
 * Replace the existing AWS AccountID's with your own Account ID. This will also update the Dockerfiles.
 
 ```
-$ python search_and_replace.py . 057281004471 {your AWS AccountId}
+$ python search_and_replace.py . 714284646049 {your AWS AccountId}
 ```
 
 * Launch the stack
