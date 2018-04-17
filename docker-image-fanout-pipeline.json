@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Provisions an ECR Repository.",
+  "Description": "Provisions all AWS resources required for fanning out a Docker image hierarchy continuous deployment pipeline.",
   "Parameters": {
     "AdminRoleARN": {
       "Type": "String"

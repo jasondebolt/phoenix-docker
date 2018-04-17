@@ -5,7 +5,7 @@
   },
   {
     "ParameterKey": "ProjectName",
-    "ParameterValue": "base-docker-images"
+    "ParameterValue": "docker-image-fanout-pipeline"
   },
   {
     "ParameterKey": "ProjectDescription",
@@ -13,10 +13,10 @@
   },
   {
     "ParameterKey": "CodeBuildBucketName",
-    "ParameterValue": "phoenix-code-build-base-docker-images"
+    "ParameterValue": "phoenix-code-build-docker-image-fanout-pipeline"
   },
   {
     "ParameterKey": "CodePipelineBucketName",
-    "ParameterValue": "phoenix-code-pipeline-base-docker-images"
+    "ParameterValue": "phoenix-code-pipeline-docker-image-fanout-pipeline"
   }
 ]
