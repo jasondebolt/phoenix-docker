@@ -6,7 +6,8 @@
       "Type": "String"
     },
     "ProjectName": {
-      "Type": "String"
+      "Type": "String",
+      "Description": "This name will also be used to create the CodeCommit repo, CodePipeline, CodeBuild jobs, etc.",
     },
     "ProjectDescription": {
       "Type": "String"
@@ -233,11 +234,146 @@
           "PolicyDocument": {
             "Version": "2012-10-17",
             "Statement": [{
-              "Sid": "AccessECR",
-              "Effect": "Allow",
-              "Action": ["ecr:*"],
-              "Resource": "*"
-            }]
+                "Sid": "AccessCacheAndArtifactBucket",
+                "Effect": "Allow",
+                "Resource": [{
+                  "Fn::Join": ["", [
+                    "arn:aws:s3:::",
+                    {
+                      "Ref": "CodeBuildBucket"
+                    },
+                    "/*"
+                  ]]
+                }],
+                "Action": [
+                  "s3:PutObject",
+                  "s3:GetObject"
+                ]
+              },
+              {
+                "Sid": "AccessCodePipelineBucket",
+                "Effect": "Allow",
+                "Resource": {
+                  "Fn::Join": ["", [
+                    "arn:aws:s3:::",
+                    {
+                      "Ref": "CodePipelineBucket"
+                    },
+                    "/*"
+                  ]]
+                },
+                "Action": [
+                  "s3:PutObject",
+                  "s3:GetObject",
+                  "s3:GetObjectVersion"
+                ]
+              },
+              {
+                "Sid": "AccessLogs",
+                "Effect": "Allow",
+                "Resource": [{
+                    "Fn::Join": ["", [
+                      "arn:aws:logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "ProjectName"
+                      },
+                      "*"
+                    ]]
+                  },
+                  {
+                    "Fn::Join": ["", [
+                      "arn:aws:logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "ProjectName"
+                      },
+                      "*:*"
+                    ]]
+                  }
+                ],
+                "Action": [
+                  "logs:CreateLogGroup",
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+                ]
+              },
+              {
+                "Sid": "AccessCodeCommitRepo",
+                "Effect": "Allow",
+                "Resource": [{
+                  "Fn::Join": ["", [
+                    "arn:aws:codecommit:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ProjectName"
+                    }
+                  ]]
+                }],
+                "Action": [
+                  "codecommit:GitPull"
+                ]
+              },
+              {
+                "Sid": "AccessEc2",
+                "Effect": "Allow",
+                "Action": [
+                  "ec2:*"
+                ],
+                "Resource": "*"
+              },
+              {
+                "Sid": "AccessSystemsManagerParameters",
+                "Effect": "Allow",
+                "Action": [
+                  "ssm:GetParameters"
+                ],
+                "Resource": {
+                  "Fn::Join": ["", [
+                    "arn:aws:ssm:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":parameter/CodeBuild/*"
+                  ]]
+                }
+              },
+              {
+                "Sid": "AccessECR",
+                "Effect": "Allow",
+                "Action": [
+                  "ecr:*"
+                ],
+                "Resource": [
+                  "*"
+                ]
+              }
+            ]
           }
         }]
       }
@@ -361,7 +497,9 @@
           "Location": {
             "Fn::Join": ["", [
               "https://git-codecommit.",
-              {"Ref": "AWS::Region"},
+              {
+                "Ref": "AWS::Region"
+              },
               ".amazonaws.com/v1/repos/",
               {
                 "Ref": "ProjectName"
