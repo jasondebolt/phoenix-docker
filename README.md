@@ -14,7 +14,7 @@ $ git clone {the URL of this repo}
 ```
 
 * Update the params.json file with your project info (replace 'phoenix' with your project name.)
-* The ProjectName should match the name of this Git repo. You can keep it as 'docker-image-fanout-pipeline'.
+* The ProjectName should match the name of this Git repo. You can keep it as 'docker-code-pipeline'.
 * Update the 'ECR' variable in the buildspec.yml file with your AWS Account ID.
 * Replace the existing AWS AccountID's with your own Account ID. This will also update the Dockerfiles.
 
@@ -24,8 +24,8 @@ $ python search_and_replace.py . 714284646049 {your AWS AccountId}
 
 * Launch the stack
 ```
-$ aws cloudformation validate-template --template-body file://docker-image-fanout-pipeline.json
-$ aws cloudformation create-stack --stack-name docker-image-fanout-pipeline --template-body file://docker-image-fanout-pipeline.json --parameters file://params.json --capabilities CAPABILITY_NAMED_IAM
+$ aws cloudformation validate-template --template-body file://docker-code-pipeline.json
+$ aws cloudformation create-stack --stack-name docker-code-pipeline --template-body file://docker-code-pipeline.json --parameters file://params.json --capabilities CAPABILITY_NAMED_IAM
 ```
 
 * After the stack has been created, add the generated CodeCommit repo as a remote branch and push this repo to it.
@@ -43,8 +43,8 @@ Make any of the following changes in this repo:
 * Then update the stack:
 
 ```
-$ aws cloudformation validate-template --template-body file://docker-image-fanout-pipeline.json
-$ aws cloudformation update-stack --stack-name docker-image-fanout-pipeline --template-body file://docker-image-fanout-pipeline.json --parameters file://params.json --capabilities CAPABILITY_NAMED_IAM
+$ aws cloudformation validate-template --template-body file://docker-code-pipeline.json
+$ aws cloudformation update-stack --stack-name docker-code-pipeline --template-body file://docker-code-pipeline.json --parameters file://params.json --capabilities CAPABILITY_NAMED_IAM
 ```
 
 #### More Information
