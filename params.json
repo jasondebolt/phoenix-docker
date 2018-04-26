@@ -1,7 +1,7 @@
 [
   {
     "ParameterKey": "AdminRoleARN",
-    "ParameterValue": "arn:aws:iam::714284646049:role/PhoenixAdmins"
+    "ParameterValue": "arn:aws:iam::448697193165:role/CreditAdmins"
   },
   {
     "ParameterKey": "ProjectName",
@@ -13,10 +13,10 @@
   },
   {
     "ParameterKey": "CodeBuildBucketName",
-    "ParameterValue": "mosaic-phoenix-docker-code-build"
+    "ParameterValue": "mosaic-credit-docker-code-build"
   },
   {
     "ParameterKey": "CodePipelineBucketName",
-    "ParameterValue": "mosaic-phoenix-docker-code-pipeline"
+    "ParameterValue": "mosaic-credit-docker-code-pipeline"
   }
 ]

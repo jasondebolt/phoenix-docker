@@ -13,13 +13,13 @@ A full CI/CD solution for continuously building and deploying entire Docker imag
 $ git clone {the URL of this repo}
 ```
 
-* Update the params.json file with your project info (replace 'phoenix' with your project name.)
+* Update the params.json file with your project info (replace 'credit' with your project name.)
 * The ProjectName should match the name of this Git repo. You can keep it as 'docker-code-pipeline'.
 * Update the 'ECR' variable in the buildspec.yml file with your AWS Account ID.
 * Replace the existing AWS AccountID's with your own Account ID. This will also update the Dockerfiles.
 
 ```
-$ python search_and_replace.py . 714284646049 {your AWS AccountId}
+$ python search_and_replace.py . 448697193165 {your AWS AccountId}
 ```
 
 * Launch the stack
