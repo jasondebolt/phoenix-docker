@@ -23,7 +23,7 @@ python parameters_generator.py template-docker-code-pipeline-params.json > temp1
 aws cloudformation validate-template --template-body file://template-docker-code-pipeline.json
 
 aws cloudformation $1-stack \
-    --stack-name $PROJECT_NAME-docker-pipeline \
+    --stack-name $PROJECT_NAME-code-pipeline \
     --template-body file://template-docker-code-pipeline.json \
     --parameters file://temp1.json \
     --capabilities CAPABILITY_NAMED_IAM

@@ -1,6 +1,6 @@
 {
   "Parameters": {
-    "ProjectName": "phoenix",
+    "ProjectName": "phoenix-docker",
     "AdminRoleARN": "arn:aws:iam::714284646049:role/PhoenixAdmins",
     "ProjectDescription": "Automatically builds hierarchies of Docker images and pushes them to ECR.",
     "CodeBuildBucketName": "mosaic-phoenix-docker-code-build",
