@@ -9,10 +9,6 @@ A full CI/CD solution for continuously building and deploying entire Docker imag
   to ECR only when they can be successfully built.
 
 #### Running the stack for the first time
-```
-$ git clone {the URL of this repo}
-```
-
 * Update the params.json file with your project info (replace 'phoenix' with your project name.)
 * Update the template-gitlab-pipeline-params.json with your project info.
 * The ProjectName should match the name of this Git repo. You can keep it as 'docker-code-pipeline'.
@@ -20,20 +16,18 @@ $ git clone {the URL of this repo}
 * Replace the existing AWS AccountID's with your own Account ID. This will also update the Dockerfiles.
 
 ```
+$ git clone {the URL of this repo}
 $ python search_and_replace.py . 714284646049 {your AWS AccountId}
 $ python search_and_replace.py . phoenix {your-project-name}
-```
 
-* Launch the stacks
-```
-./deploy-gitlab-pipeline.sh create
-./deploy-docker-code-pipeline.sh create
-```
+ Launch the stacks
 
-* Create a GitLab webhook using the generated API endpoint, secret token, and SSH public key from the gitlab stack.
+$ ./deploy-gitlab-pipeline.sh create
+$ ./deploy-docker-code-pipeline.sh create
 
-* Push to gitlab. Watch the pipeline build all of your Docker images and push them to ECR automatically.
-```
+ Create a GitLab webhook using the generated API endpoint, secret token, and SSH public key from the gitlab stack.
+ Push to gitlab. Watch the pipeline build all of your Docker images and push them to ECR automatically.
+
 $ git push origin master
 ```
 
