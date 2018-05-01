@@ -14,24 +14,26 @@ $ git clone {the URL of this repo}
 ```
 
 * Update the params.json file with your project info (replace 'phoenix' with your project name.)
+* Update the template-gitlab-pipeline-params.json with your project info.
 * The ProjectName should match the name of this Git repo. You can keep it as 'docker-code-pipeline'.
 * Update the 'ECR' variable in the buildspec.yml file with your AWS Account ID.
 * Replace the existing AWS AccountID's with your own Account ID. This will also update the Dockerfiles.
 
 ```
 $ python search_and_replace.py . 714284646049 {your AWS AccountId}
+$ python search_and_replace.py . phoenix {your-project-name}
 ```
 
-* Launch the stack
+* Launch the stacks
 ```
-$ aws cloudformation validate-template --template-body file://docker-code-pipeline.json
-$ aws cloudformation create-stack --stack-name docker-code-pipeline --template-body file://docker-code-pipeline.json --parameters file://params.json --capabilities CAPABILITY_NAMED_IAM
+./deploy-gitlab-pipeline.sh create
+./deploy-docker-code-pipeline.sh create
 ```
 
-* After the stack has been created, add the generated CodeCommit repo as a remote branch and push this repo to it.
-* After pushing, watch the pipeline build all of your Docker images and push them to ECR using AWS CodePipeline.
+* Create a GitLab webhook using the generated API endpoint, secret token, and SSH public key from the gitlab stack.
+
+* Push to gitlab. Watch the pipeline build all of your Docker images and push them to ECR automatically.
 ```
-$ git remote add codecommit {codecommit URL}
 $ git push origin master
 ```
 
@@ -43,8 +45,7 @@ Make any of the following changes in this repo:
 * Then update the stack:
 
 ```
-$ aws cloudformation validate-template --template-body file://docker-code-pipeline.json
-$ aws cloudformation update-stack --stack-name docker-code-pipeline --template-body file://docker-code-pipeline.json --parameters file://params.json --capabilities CAPABILITY_NAMED_IAM
+./deploy-docker-code-pipeline.sh update
 ```
 
 #### More Information
