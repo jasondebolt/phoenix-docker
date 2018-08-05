@@ -20,6 +20,8 @@ phases:
       - docker build -t $ECR/scala:2.12 .
       - cd $CODEBUILD_SRC_DIR/ubuntu/scala-build/0.1.0
       - docker build -t $ECR/scala-build:0.1.0 .
+      - cd $CODEBUILD_SRC_DIR/ubuntu/nodejs/10.1.0
+      - docker build -t $ECR/nodejs:10.1.0 .
   post_build:
     commands:
       - docker tag $ECR/ubuntu:14.04 $ECR/ubuntu:$CODEBUILD_RESOLVED_SOURCE_VERSION
@@ -34,3 +36,6 @@ phases:
       - docker tag $ECR/scala-build:0.1.0 $ECR/scala-build:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $ECR/scala-build:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $ECR/scala-build:0.1.0
+      - docker tag $ECR/nodejs:10.1.0 $ECR/nodejs:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ECR/nodejs:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ECR/nodejs:10.1.0
