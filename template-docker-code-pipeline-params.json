@@ -1,9 +1,9 @@
 {
   "Parameters": {
-    "ProjectName": "phoenix-docker",
-    "AdminRoleARN": "arn:aws:iam::714284646049:role/PhoenixAdmins",
+    "ProjectName": "credit-docker",
+    "AdminRoleARN": "arn:aws:iam::448697193165:role/CreditAdmins",
     "ProjectDescription": "Automatically builds hierarchies of Docker images and pushes them to ECR.",
-    "CodeBuildBucketName": "mosaic-phoenix-docker-code-build",
-    "CodePipelineBucketName": "mosaic-phoenix-docker-code-pipeline"
+    "CodeBuildBucketName": "mosaic-credit-docker-code-build",
+    "CodePipelineBucketName": "mosaic-credit-docker-code-pipeline"
   }
 }

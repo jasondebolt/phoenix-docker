@@ -9,7 +9,7 @@ A full CI/CD solution for continuously building and deploying entire Docker imag
   to ECR only when they can be successfully built.
 
 #### Running the stack for the first time
-* Update the params.json file with your project info (replace 'phoenix' with your project name.)
+* Update the params.json file with your project info (replace 'credit' with your project name.)
 * Update the template-gitlab-pipeline-params.json with your project info.
 * The ProjectName should match the name of this Git repo. You can keep it as 'docker-code-pipeline'.
 * Update the 'ECR' variable in the buildspec.yml file with your AWS Account ID.
@@ -17,8 +17,8 @@ A full CI/CD solution for continuously building and deploying entire Docker imag
 
 ```
 $ git clone {the URL of this repo}
-$ python search_and_replace.py . 714284646049 {your AWS AccountId}
-$ python search_and_replace.py . phoenix {your-project-name}
+$ python search_and_replace.py . 448697193165 {your AWS AccountId}
+$ python search_and_replace.py . credit {your-project-name}
 
  Launch the stacks
 

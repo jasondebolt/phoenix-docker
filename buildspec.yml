@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    ECR: "714284646049.dkr.ecr.us-east-1.amazonaws.com"
+    ECR: "448697193165.dkr.ecr.us-east-1.amazonaws.com"
 
 phases:
   pre_build:
