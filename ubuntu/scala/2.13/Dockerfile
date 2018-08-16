@@ -22,3 +22,7 @@ RUN \
   apt-get update && \
   apt-get install sbt && \
   sbt sbtVersion
+
+# set artifactory as the global resolver
+RUN mkdir -p /root/.sbt
+COPY repositories /root/.sbt/repositories

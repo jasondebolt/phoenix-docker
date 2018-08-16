@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    ECR: "448697193165.dkr.ecr.us-east-1.amazonaws.com"
+    ECR: "714284646049.dkr.ecr.us-east-1.amazonaws.com"
 
 phases:
   pre_build:
@@ -16,10 +16,10 @@ phases:
       - docker build -t $ECR/ubuntu:14.04 .
       - cd $CODEBUILD_SRC_DIR/ubuntu/java/openjdk-8
       - docker build -t $ECR/java:openjdk-8 .
-      - cd $CODEBUILD_SRC_DIR/ubuntu/scala/2.12
-      - docker build -t $ECR/scala:2.12 .
-      - cd $CODEBUILD_SRC_DIR/ubuntu/scala-build/0.1.0
-      - docker build -t $ECR/scala-build:0.1.0 .
+      - cd $CODEBUILD_SRC_DIR/ubuntu/scala/2.13
+      - docker build -t $ECR/scala:2.13 .
+      - cd $CODEBUILD_SRC_DIR/ubuntu/scala-build/0.1.1
+      - docker build -t $ECR/scala-build:0.1.1 .
       - cd $CODEBUILD_SRC_DIR/ubuntu/nodejs/10.1.0
       - docker build -t $ECR/nodejs:10.1.0 .
   post_build:
@@ -30,12 +30,12 @@ phases:
       - docker tag $ECR/java:openjdk-8 $ECR/java:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $ECR/java:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $ECR/java:openjdk-8
-      - docker tag $ECR/scala:2.12 $ECR/scala:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker tag $ECR/scala:2.13 $ECR/scala:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $ECR/scala:$CODEBUILD_RESOLVED_SOURCE_VERSION
-      - docker push $ECR/scala:2.12
-      - docker tag $ECR/scala-build:0.1.0 $ECR/scala-build:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - docker push $ECR/scala:2.13
+      - docker tag $ECR/scala-build:0.1.1 $ECR/scala-build:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $ECR/scala-build:$CODEBUILD_RESOLVED_SOURCE_VERSION
-      - docker push $ECR/scala-build:0.1.0
+      - docker push $ECR/scala-build:0.1.1
       - docker tag $ECR/nodejs:10.1.0 $ECR/nodejs:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $ECR/nodejs:$CODEBUILD_RESOLVED_SOURCE_VERSION
       - docker push $ECR/nodejs:10.1.0
