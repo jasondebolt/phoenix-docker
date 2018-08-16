@@ -1,7 +1,7 @@
 {
   "Parameters": {
-    "ProjectName": "lms-docker",
-    "OutputBucketName": "mosaic-lms-gitlab-docker-code-pipeline",
+    "ProjectName": "phoenix-docker",
+    "OutputBucketName": "mosaic-phoenix-gitlab-docker-code-pipeline",
     "AllowedIps": "54.175.38.99/32",
     "ApiSecret": "API_SECRET",
     "Vpc": "dev"

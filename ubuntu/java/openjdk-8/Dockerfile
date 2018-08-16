@@ -1,4 +1,4 @@
-FROM 928181911649.dkr.ecr.us-east-1.amazonaws.com/ubuntu:14.04
+FROM 714284646049.dkr.ecr.us-east-1.amazonaws.com/ubuntu:14.04
 
 ENV JAVA_VERSION=8 \
     JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64" \

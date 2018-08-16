@@ -1,4 +1,4 @@
-FROM 928181911649.dkr.ecr.us-east-1.amazonaws.com/java:openjdk-8
+FROM 714284646049.dkr.ecr.us-east-1.amazonaws.com/java:openjdk-8
 
 # Scala env variables
 ENV SCALA_VERSION 2.12.4

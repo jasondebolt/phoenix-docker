@@ -1,9 +1,9 @@
 {
   "Parameters": {
-    "ProjectName": "lms-docker",
-    "AdminRoleARN": "arn:aws:iam::928181911649:role/CreditAdmins",
+    "ProjectName": "phoenix-docker",
+    "AdminRoleARN": "arn:aws:iam::714284646049:role/CreditAdmins",
     "ProjectDescription": "Automatically builds hierarchies of Docker images and pushes them to ECR.",
-    "CodeBuildBucketName": "mosaic-lms-docker-code-build",
-    "CodePipelineBucketName": "mosaic-lms-docker-code-pipeline"
+    "CodeBuildBucketName": "mosaic-phoenix-docker-code-build",
+    "CodePipelineBucketName": "mosaic-phoenix-docker-code-pipeline"
   }
 }
