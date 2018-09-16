@@ -1,0 +1,4 @@
+[repositories]
+local
+ivy-proxy: https://art.intranet.solarmosaic.com:443/artifactory/sbt-ivy-releases/, [organization]/[module]/[revision]/[type]s/[artifact](-[classifier]).[ext]
+maven-proxy: https://art.intranet.solarmosaic.com:443/artifactory/sbt-maven-releases/
