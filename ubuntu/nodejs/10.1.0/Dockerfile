@@ -17,7 +17,7 @@ RUN set -ex \
     && apt-get install git=1:2.* -y --no-install-recommends \
     && git version \
     && apt-get install -y --no-install-recommends openssh-client=1:6.6* \
-    && mkdir ~/.ssh \
+    && mkdir -p ~/.ssh \
     && touch ~/.ssh/known_hosts \
     && ssh-keyscan -t rsa,dsa -H github.com >> ~/.ssh/known_hosts \
     && ssh-keyscan -t rsa,dsa -H bitbucket.org >> ~/.ssh/known_hosts \
