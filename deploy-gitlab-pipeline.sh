@@ -29,7 +29,7 @@ python parameters_generator.py temp1.json > temp2.json
 aws cloudformation validate-template --template-body file://template-gitlab-pipeline.json
 
 aws cloudformation $1-stack \
-    --stack-name $PROJECT_NAME-gitlab-pipeline \
+    --stack-name $PROJECT_NAME-docker-gitlab-pipeline \
     --template-body file://template-gitlab-pipeline.json \
     --parameters file://temp2.json \
     --capabilities CAPABILITY_IAM
