@@ -13,6 +13,9 @@ EXAMPLE:
   $ python search_and_replace.py . FOO BAR "*"  ==> Matches ALL files, like *
   $ python search_and_replace.py . FOO BAR "*.txt"  ==> Matches
 """
+
+__author__ = "Jason DeBolt (jasondebolt@gmail.com)"
+
 import os, fnmatch, sys
 import fnmatch
 import functools
@@ -37,6 +40,11 @@ def find_files(dir_path=None, patterns=None):
 def search_and_replace(directory, find, replace, filePattern=None):
     for filename in find_files(directory, filePattern):
         print('Attempting to replace content in filename ' + filename)
+        if (filename.endswith('.png') or
+            filename.endswith('.jpg') or
+            filename.endswith('.jpeg') or
+            filename.endswith('.svg')):
+            continue
         with open(filename) as f:
             s_old = f.read()
         s_new = s_old.replace(find, replace)
@@ -44,6 +52,7 @@ def search_and_replace(directory, find, replace, filePattern=None):
             print('              REPLACING content in filename ' + filename)
         with open(filename, 'w') as f:
             f.write(s_new)
+    return 0
 
 if __name__ == '__main__':
     #TODO(jason.debolt): Clean this up with argparse.
