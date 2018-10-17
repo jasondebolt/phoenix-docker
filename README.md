@@ -1,6 +1,7 @@
 # Docker Image Fanout Pipeline
 A full CI/CD solution for continuously building and deploying entire Docker image hierarchies.
 
+
 #### Overview
 Having a hierarchy of docker images for your Phoenix project is useful for ensuring all images
 have a common set of libraries, utilities, and dependencies. For example, you may use different
