@@ -119,4 +119,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    jq zip
+    zip
+
+# Install jq 1.5
+RUN wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 -O /usr/bin/jq && chmod 755 /usr/bin/jq
