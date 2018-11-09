@@ -19,14 +19,14 @@ docker images for different types of build jobs, or as base images for productio
 $ git clone {the URL of this repo}
 $ python search_and_replace.py . 714284646049 {your AWS AccountId}
 $ python search_and_replace.py . phoenix {your-project-name} --> where "your-project-name" is name of your git repo.
-- Update the params in the 'template-docker-code-pipeline-params.json' file, using your project role.
+- Update the params in the 'template-pipeline-params.json' file, using your project role.
 $ git add -A
 $ git diff --> Run this command to view changes
 $ git commit -m "Updating repo to use my project name and AWS account ID."
 
  Launch the stacks
 
-$ ./deploy-docker-code-pipeline.sh create
+$ ./deploy-pipeline.sh create
 
 $ git push origin master
 ```
@@ -39,7 +39,7 @@ Make any of the following changes in this repo:
 * Then update the stack:
 
 ```
-./deploy-docker-code-pipeline.sh update
+./deploy-pipeline.sh update
 ```
 
 #### More Information
