@@ -2,14 +2,16 @@
 A full CI/CD solution for continuously building and deploying entire Docker image hierarchies.
 
 #### Overview
-Having a hierarchy of docker images for your Phoenix project is useful for ensuring all images
-have a common set of libraries, utilities, and dependencies. For example, you may use different
-docker images for different types of build jobs, or as base images for production builds.
+Builds infrastructure for managing a hierarchy of docker images required for a Phoenix microservice project.
+A default set of base docker images for build nodes and application nodes can be found in this repo, along
+with the infrastructure to manage deployment of those images in a safe and predictable way.
 
 #### What does this CloudFormation stack do?
-* Creates Several ECR Docker repos which will contain images built from your Dockerfiles.
-* Creates a CodePipeline to progressively build Docker images, pushing all
-  to ECR only when they can be successfully built.
+* Creates a GitHub webhook.
+* Creates ECR repos for storing families of related docker images.
+* Creates a CodeBuild job for building and pushing the docker images.
+* Creates a CodePipeline for orchestration.
+* Creates IAM roles.
 
 #### Running the stack for the first time
 * Clone this repo and give it a name, such as "credit-service-docker", or "point-of-sale-docker"
@@ -22,21 +24,22 @@ $ python search_and_replace.py . phoenix {your-project-name} --> where "your-pro
 ```
 
 #### Create a personal access token in GitHub
-- Settings > Developer Settings > Personal access token
-- Token description can be "DockerPipelineWebhook"
-- Scope should be "admin:repo_hook" and "repo" scopes.
-- Copy the token locally so we can use it later.
-- Save token and click "Enable SSO", then "Authorize" --> IMPORTANT
-- Click Continue, and continue again.
+* Settings > Developer Settings > Personal access token
+* Token description can be "DockerPipelineWebhook"
+* Scope should be "admin:repo_hook" and "repo" scopes.
+* Copy the token locally so we can use it later.
+* Save token and click "Enable SSO", then "Authorize" --> IMPORTANT
+* Click Continue, and continue again.
 
 #### Save the token in SSM parameter store
 You should see a pair of "Version" responses.
+
 ```
-./ssm-put-github-token.sh {your-github-token} {github-username-of-token-owner}
+./ssm-put-github-token.sh {your-github-token}
 ```
 
 #### Update parameter file
-Update the params in the 'template-pipeline-params.json' file, using your project role.
+* Update the params in the 'template-pipeline-params.json' file, using your project role.
 
 ```
 $ git add -A
@@ -44,24 +47,17 @@ $ git diff --> Run this command to view changes
 $ git commit -m "Updating repo to use my project name and AWS account ID."
 ```
 
- Launch the stacks
-
+#### Create or update the stack
+```
 $ ./deploy-pipeline.sh create
+# ./deploy-pipeline.sh update
+```
 
+#### Trigger the pipeline
+```
 $ git push origin master
 ```
 
-#### Adding new Dockerfiles, ECR Repos, pipeline stages, or changing a CodeBuild job.
-Make any of the following changes in this repo:
-* Adding a new Dockerfile and ECR Repo
-* Adding/changing the CodePipeline stages
-* Adding/changing the buildspec.yml which progressively and sequentially build the docker images and pushes them to your ECR repos.
-* Then update the stack:
-
-```
-./deploy-pipeline.sh update
-```
-
 #### More Information
-You can find more info on how the buildspec.yaml file works here:
+Inspiration for this project:
 https://github.com/aws/aws-codebuild-docker-images
