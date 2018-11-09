@@ -14,8 +14,8 @@ with the infrastructure to manage deployment of those images in a safe and predi
 * Creates IAM roles.
 
 #### Running the stack for the first time
-* Clone this repo and give it a name, such as "credit-service-docker", or "point-of-sale-docker"
-* The name of this repo must match the project name (see 'your-project-name' below)
+* Clone this repo and give it a name, such as "credit-service-docker", or "point-of-sale-docker".
+* The name of this repo must match the project name (see 'your-project-name' below).
 
 ```
 $ git clone {the URL of this repo}
