@@ -5,7 +5,7 @@ set -e
 # You must generate an access token within GitHub and pass it to this script.
 #
 # USAGE
-#   ./ssm-put-github-token.sh {Github Token}
+#   ./deploy-ssm-github-token.sh {Github Token}
 
 # Check for valid arguments
 if [ $# -ne 1 ]

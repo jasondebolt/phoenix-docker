@@ -35,7 +35,7 @@ $ python search_and_replace.py . phoenix {your-project-name} --> where "your-pro
 You should see a pair of "Version" responses.
 
 ```
-./ssm-put-github-token.sh {your-github-token}
+./deploy-ssm-github-token.sh {your-github-token}
 ```
 
 #### Update parameter file
