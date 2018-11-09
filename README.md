@@ -19,10 +19,30 @@ docker images for different types of build jobs, or as base images for productio
 $ git clone {the URL of this repo}
 $ python search_and_replace.py . 714284646049 {your AWS AccountId}
 $ python search_and_replace.py . phoenix {your-project-name} --> where "your-project-name" is name of your git repo.
-- Update the params in the 'template-pipeline-params.json' file, using your project role.
+```
+
+#### Create a personal access token in GitHub
+- Settings > Developer Settings > Personal access token
+- Token description can be "DockerPipelineWebhook"
+- Scope should be "admin:repo_hook" and "repo" scopes.
+- Copy the token locally so we can use it later.
+- Save token and click "Enable SSO", then "Authorize" --> IMPORTANT
+- Click Continue, and continue again.
+
+#### Save the token in SSM parameter store
+You should see a pair of "Version" responses.
+```
+./ssm-put-github-token.sh {your-github-token} {github-username-of-token-owner}
+```
+
+#### Update parameter file
+Update the params in the 'template-pipeline-params.json' file, using your project role.
+
+```
 $ git add -A
 $ git diff --> Run this command to view changes
 $ git commit -m "Updating repo to use my project name and AWS account ID."
+```
 
  Launch the stacks
 

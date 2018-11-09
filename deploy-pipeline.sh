@@ -6,7 +6,6 @@ set -e
 # USAGE:
 #  ./deploy-pipeline.sh [create | update]
 
-
 # Check for valid arguments
 if [ $# -ne 1 ]
   then
@@ -23,7 +22,7 @@ python parameters_generator.py template-pipeline-params.json > temp1.json
 aws cloudformation validate-template --template-body file://template-pipeline.json
 
 aws cloudformation $1-stack \
-    --stack-name docker-code-pipeline \
+    --stack-name phoenix-docker-code-pipeline \
     --template-body file://template-pipeline.json \
     --parameters file://temp1.json \
     --capabilities CAPABILITY_NAMED_IAM
