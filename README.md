@@ -15,7 +15,7 @@ with the infrastructure to manage deployment of those images in a safe and predi
 
 #### Running the stack for the first time
 * Clone this repo and give it a name, such as "credit-service-docker", or "point-of-sale-docker"
-* Take note of the name of the git repo as it must be the same as the project name.
+* The name of this repo must match the project name (see 'your-project-name' below)
 
 ```
 $ git clone {the URL of this repo}
