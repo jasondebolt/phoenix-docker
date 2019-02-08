@@ -41,6 +41,11 @@ $ git commit -m "Updating repo to use my project name and AWS account ID."
 $ git push origin master
 ```
 
+#### Create a repo in github 
+1. Name the docker repo "{your-project}-docker"
+2. Make sure to add this repo under the solmosaic organization
+3. Add both the "codebuild-users" and "devops-and-it" groups as admin users.
+
 #### AWS CodeBuild GitHub OAuth authorization
 * These steps are only required once per AWS account.
 * When using AWS CodeBuild with GitHub webhook integrations, there is a one time setup involving Oauth tokens for new AWS accounts.
