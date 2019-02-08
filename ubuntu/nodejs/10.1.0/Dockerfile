@@ -1,4 +1,4 @@
-FROM 714284646049.dkr.ecr.us-east-1.amazonaws.com/ubuntu:14.04
+FROM 123456789123.dkr.ecr.us-east-1.amazonaws.com/ubuntu:14.04
 
 ENV DOCKER_BUCKET="download.docker.com" \
     DOCKER_VERSION="17.09.0-ce" \
