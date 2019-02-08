@@ -19,6 +19,8 @@ with the infrastructure to manage deployment of those images in a safe and predi
 
 ```
 $ git clone {the URL of this repo}
+$ git remote remove origin
+$ git remote add origin {your-repo-origin}
 $ python search_and_replace.py . 714284646049 {your AWS AccountId}
 $ python search_and_replace.py . phoenix {your-project-name} --> where "your-project-name" is name of your git repo.
 ```
