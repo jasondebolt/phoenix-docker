@@ -25,20 +25,12 @@ $ python search_and_replace.py . 714284646049 {your AWS AccountId}
 $ python search_and_replace.py . phoenix {your-project-name} --> where "your-project-name" is name of your git repo.
 ```
 
-#### Create a personal access token in GitHub
-* Settings > Developer Settings > Personal access token
-* Token description can be "DockerPipelineWebhook"
-* Scope should be "admin:repo_hook" and "repo" scopes.
-* Copy the token locally so we can use it later.
-* Save token and click "Enable SSO", then "Authorize" --> IMPORTANT
-* Click Continue, and continue again.
-
 #### Save the token in SSM parameter store
-You should see a pair of "Version" responses.
 
 ```
-./deploy-ssm-github-token.sh {your-github-token}
+./deploy-ssm-github-token.sh {token}
 ```
+Where {token} can be found in LastPass under "mosaic-codebuild personal access token". This token is required mostly to create webhook and make API calls into GitHub.
 
 #### Update parameter file
 * Update the params in the 'template-pipeline-params.json' file, using your project role.
