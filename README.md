@@ -23,6 +23,7 @@ $ git remote remove origin
 $ git remote add origin {your-repo-origin}
 $ python search_and_replace.py . 714284646049 {your AWS AccountId}
 $ python search_and_replace.py . phoenix {your-project-name} --> where "your-project-name" is name of your git repo.
+$ python search_and_replace.py . PhoenixAdmins {YourProjectRoleName}
 ```
 
 #### Save the token in SSM parameter store
@@ -32,16 +33,29 @@ $ python search_and_replace.py . phoenix {your-project-name} --> where "your-pro
 ```
 Where {token} can be found in LastPass under "mosaic-codebuild personal access token". This token is required mostly to create webhook and make API calls into GitHub.
 
-#### Update parameter file
-* Update the params in the 'template-pipeline-params.json' file, using your project role.
-
+#### Git commit the changes
 ```
 $ git add -A
-$ git diff --> Run this command to view changes
+$ git diff HEAD --> Run this command to view changes
 $ git commit -m "Updating repo to use my project name and AWS account ID."
 ```
 
-#### Create or update the stack
+#### AWS CodeBuild GitHub OAuth authorization
+* These steps are only required once per AWS account.
+* When using AWS CodeBuild with GitHub webhook integrations, there is a one time setup involving Oauth tokens for new AWS accounts.
+* We will need to use a shared admin GitHub account to authorize these tokens rather than use user specific GitHub accounts.
+1. Sign out of your OneLogin account.
+2. Sign back into OneLogin as the "devops+mosaic-codebuild@joinmosaic.com" user. See lastpass for login credentials.
+3. Once logged in, click on the GitHub app within OneLogin.
+4. At the GitHub login screen, use the username and password specified in lastpass.
+5. Verify that you are logged into GitHub as the mosaic-codebuild user and not your mosaic github user.
+6. In the new AWS account, open the AWS CodeBuild console and a new job called "test".
+7. Create a simple CodeBuild job using GitHub as the source, and click on the "Connect to GitHub" button.
+8. A dialog box will appear where you can authorize "aws-codesuite" to access the GitHub organization.
+9. Now you can allow CloudFormation to automatically create GitHub webhooks associated with this AWS account.
+
+#### Create or update the stack 
+Make sure you've followed all other steps above before executing the commands below.
 ```
 $ ./deploy-pipeline.sh create
 # ./deploy-pipeline.sh update
