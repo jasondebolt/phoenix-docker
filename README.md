@@ -38,6 +38,7 @@ Where {token} can be found in LastPass under "mosaic-codebuild personal access t
 $ git add -A
 $ git diff HEAD --> Run this command to view changes
 $ git commit -m "Updating repo to use my project name and AWS account ID."
+$ git push origin master
 ```
 
 #### AWS CodeBuild GitHub OAuth authorization
